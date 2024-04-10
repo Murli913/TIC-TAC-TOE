@@ -1,4 +1,4 @@
-name: Build,Analyze,scan
+name: Build
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
 
 
 jobs:
-  build-analyze-scan:
+  build:
     name: Build
-    runs-on: [Linux]
+    runs-on: [self-hosted]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -18,5 +18,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-     
       
