@@ -14,6 +14,10 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: NPM Install
         run: npm install # Add your specific npm install command
+      - name: Install Trivy
+        run: |
+          # Scanning files
+          trivy fs . > trivyfs.txt
       - name: Build and analyze with SonarQube
         uses: sonarsource/sonarqube-scan-action@master
         env:
