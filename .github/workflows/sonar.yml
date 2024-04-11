@@ -44,7 +44,7 @@ jobs:
       - name: Trivy image scan
         run: trivy image murli9131/tic-tac-toe:latest # Add Trivy scan command here
       - name: Run the container
-        run: docker run -d --name ticgame -p 3000:3000 murli9131/tic-tac-toe:latest
+        run: docker run -d --name game -p 3000:3000 murli9131/tic-tac-toe:latest
       - name: Update kubeconfig
         run: aws eks --region <cluster-region> update-kubeconfig --name <cluster-name>
       - name: Deploy to EKS
