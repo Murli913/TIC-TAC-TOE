@@ -1,4 +1,4 @@
-name: Build, Analyze, Scan
+name: Build, Analyze, Scan, Deploy
 on:
   push:
     branches:
@@ -28,9 +28,20 @@ jobs:
         env:
           DOCKER_CLI_ACI: 1
       - name: Image scan
-        run: trivy image sevenajay/tic-tac-toe:latest > trivyimage.txt
+        run: trivy image murli9131/tic-tac-toe:latest > trivyimage.txt
       - name: Build and analyze with SonarQube
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  deploy:
+    needs: build-analyze-scan
+    runs-on: self-hosted # Use your self-hosted runner label here
+    steps:
+      - name: Pull the Docker image
+        run: docker pull murli9131/tic-tac-toe:latest
+      - name: Trivy image scan
+        run: trivy image murli9131/tic-tac-toe:latest # Add Trivy scan command here
+      - name: Run the container
+        run: docker run -d --name ticgame -p 3000:3000 murli9131/tic-tac-toe:latest
